@@ -1,0 +1,100 @@
+# Source from https://github.com/minsuk-heo/problemsolving/blob/master/data_structure/BinaryTree.py#L15
+
+class Node:
+    def __init__(self, item):
+        self.val = item
+        self.left = None
+        self.right = None
+
+
+class BinaryTree:
+    def __init__(self):
+        self.head = Node(None)
+
+    def search(self, item):
+        if self.head.val is None:
+            return False
+        else:
+            return self.__search_node(self.head, item)
+
+    def __search_node(self, cur, item):
+        if cur.val == item:
+            return True
+        else:
+            if cur.val >= item:
+                if cur.left is not None:
+                    return self.__search_node(self.left, item)
+                else:
+                    return False
+            else:
+                if cur.right is not None:
+                    return self.__search_node(self.right, item)
+                else:
+                    return False
+
+    def add(self, item):
+        if self.head.val is None:
+            self.head.val = item
+        else:
+            self.__add_node(self.head, item)
+
+    def __add_node(self, cur, item):
+        if cur.val >= item:
+            if cur.left is not None:
+                self.__add_node(cur.left, item)
+            else:
+                cur.left = Node(item)
+        else:
+            if cur.right is not None:
+                self.__add_node(cur.right, item)
+            else:
+                cur.right = Node(item)
+
+    # remove action has 3 type
+    # 1) no children
+    # 2) 1 children
+    # 3) 2 children
+    def remove(self, item):
+        if self.head.val is None:
+            print("No ", item, "in BST")
+        else:
+            if self.head.val == item:
+
+                # 1) no children
+                if self.head.left is None and self.head.right is None:
+                    self.head = None
+
+                # 2-1) 1 (right)children
+                elif self.head.left is None and self.head.right is not None:
+                    self.head = self.head.right
+
+                # 2-2) 1 (left)children
+                elif self.head.left is not None and self.head.right is None:
+                    self.head = self.head.left
+
+                # 3) 2 children : Change head value to the right most-left Node value
+                #                 and remove the most_left node
+                else:
+                    self.head.val = self.most_left(self.head.right).val
+                    # In this case, we know that the parent is head
+                    # and that the most_left node is the head.right node,
+                    # so the parameters go like this
+                    self.remove_item(self.head, self.head.right, self.head.val)
+
+
+
+
+            else:
+
+    # Getting the most left node from this BST
+    def most_left(self, Node):
+
+
+
+    def __remove_node(self, cur, item):
+        #find
+        #자식이 1, 2, 3개일
+
+        if self.head.val >= item:
+
+        else:
