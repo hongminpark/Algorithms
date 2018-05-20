@@ -11,6 +11,10 @@ class BinaryTree:
     def __init__(self):
         self.head = Node(None)
 
+        self.preorder_list = []
+        self.inorder_list = []
+        self.postorder_list = []
+
     def search(self, item):
         if self.head.val is None:
             return False
@@ -58,6 +62,7 @@ class BinaryTree:
         if self.head.val is None:
             print("No ", item, "in BST")
         else:
+            # When the head of the BST is the item
             if self.head.val == item:
 
                 # 1) no children
@@ -76,25 +81,102 @@ class BinaryTree:
                 #                 and remove the most_left node
                 else:
                     self.head.val = self.most_left(self.head.right).val
-                    # In this case, we know that the parent is head
-                    # and that the most_left node is the head.right node,
-                    # so the parameters go like this
                     self.remove_item(self.head, self.head.right, self.head.val)
 
-
-
-
             else:
+                if item > self.head.val:
+                    self._remove(self.head, self.head.right, item)
+                else:
+                    self._remove(self.head, self.head.left, item)
 
     # Getting the most left node from this BST
-    def most_left(self, Node):
+    def most_left(self, headNode):
+        while True:
+            if headNode.left is None:
+                return headNode
+            headNode = headNode.left
 
-
-
-    def __remove_node(self, cur, item):
-        #find
-        #자식이 1, 2, 3개일
-
-        if self.head.val >= item:
-
+    # remove the link between parent and current
+    def remove_item(self, parent, current, item):
+        if current.val is item:
+            if parent.left == current:
+                parent.left = None
+            else:
+                parent.right = None
         else:
+            if item > current.val:
+                self.remove_item(current, current.right, item)
+            else:
+                self.remove_item(current, current.left, item)
+
+    def _remove(self, parent, current, item):
+        if current is None:
+            print("No ", item, "in BST")
+        else:
+            if current.val is item:
+                if current.left is None and current.right is None:
+                    if parent.left is current:
+                        parent.left = None
+                    else:
+                        parent.right = None
+
+                elif current.left is None and current.right is not None:
+                    if parent.left is current:
+                        parent.left = current.right
+                    else:
+                        parent.right = current.right
+
+                elif current.left is not None and current.right is None:
+                    if parent.left is current:
+                        parent.left = current.left
+                    else:
+                        parent.right = current.left
+
+                else:
+                    current.val = self.most_left(current.right).val
+                    self.remove_item(current, current.right, item)
+
+    def preorder_traverse(self):
+        # 1) Visit the root
+        # 2) Traverse the left subtree
+        # 3) Traverser the right subtree
+        if self.head is not None:
+            self.__preorder(self.head)
+
+    def __preorder(self, cur):
+        self.preorder_list.append(cur.val)
+        print(cur.val)
+
+        if cur.left is not None:
+            self.__preorder(cur.left)
+        if cur.right is not None:
+            self.__preorder(cur.right)
+
+    def inorder_traverse(self):
+        if self.head is not None:
+            self.__inorder(self.head)
+
+    def __inorder(self, cur):
+        if cur.left is not None:
+            self.__inorder(cur.left)
+
+        self.inorder_list.append(cur.val)
+        print(cur.val)
+
+        if cur.right is not None:
+            self.__inorder(cur.right)
+
+    def postorder_traverse(self):
+        if self.head is not None:
+            self.__postorder(self.head)
+
+    def __postorder(self, cur):
+        if cur.left is not None:
+            self.__postorder(cur.left)
+
+        if cur.right is not None:
+            self.__postorder(cur.right)
+
+        self.postorder_list.append(cur.val)
+        print(cur.val)
+
