@@ -1,7 +1,3 @@
-# Created by .ignore support plugin (hsz.mobi)
+.idea
+.idea/
 .idea/*
-.idea/Algorithms.iml
-.idea/markdown-navigator/
-.idea/misc.xml
-.idea/modules.xml
-.idea/workspace.xml
