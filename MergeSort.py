@@ -1,15 +1,18 @@
+# Code concept referred (a little bit) from https://smlee729.github.io/python/algorithm/2015/03/03/1-merge-sort.html
+
 def merge_sort(list):
     # recursion
     # 1) split
+    if len(list) <= 1:
+        return list
+
     left, right = split(list)
 
+    left = merge_sort(left)
+    right = merge_sort(right)
+
     # 2) (if the split size is 1)merge
-    if len(left) is 1 and len(right) is 1:
-        merged = merge(left, right)
-        return merged
-    else:
-        merge_sort(left)
-        merge_sort(right)
+    return merge(left, right)
 
 def split(list):
     mid = len(list)//2
@@ -27,7 +30,7 @@ def merge(left, right):
             result.append(left[l_idx])
             l_idx += 1
         else:
-            result.append(left[r_idx])
+            result.append(right[r_idx])
             r_idx += 1
 
         if l_idx is len(left):
@@ -42,6 +45,5 @@ def merge(left, right):
     return result
 
 if __name__ == "__main__":
-    left, right = split([1,4,3,6,2,4,7,8,2])
-    print(left, right)
-    print(merge(left, right))
+    a = [1,5,34,4,2,4,3,21,205,3]
+    print(merge_sort(a))
