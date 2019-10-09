@@ -1,49 +1,33 @@
-# Code concept referred (a little bit) from https://smlee729.github.io/python/algorithm/2015/03/03/1-merge-sort.html
+def merge_sort(A):
+    """
+    [idea]
+    1. 리스트를 계속 반으로 쪼갠다.
+    2. 왼쪽을 merge_sort에 넣고 오른쪽을 merge_sort에 넣는다.(Divide and Conquer)
+    3. 정렬된 두 리스트를 merge할 때는 두 리스트를 함께 비교한다.
+    """
+    if len(A) <= 1:
+        return A
 
-def merge_sort(list):
-    # recursion
-    # 1) split
-    if len(list) <= 1:
-        return list
-
-    left, right = split(list)
-
-    left = merge_sort(left)
-    right = merge_sort(right)
-
-    # 2) (if the split size is 1)merge
-    return merge(left, right)
-
-def split(list):
-    mid = len(list)//2
-    left = list[:mid]
-    right = list[mid:]
-    return (left, right)
-
-def merge(left, right):
-    result = []
-    l_idx = 0
-    r_idx = 0
-
-    while l_idx < len(left) and r_idx < len(right):
-        if left[l_idx] < right[r_idx]:
-            result.append(left[l_idx])
-            l_idx += 1
+    left = merge_sort(A[:len(A) // 2])
+    right = merge_sort(A[(len(A) // 2):])
+    l, r = 0, 0
+    A_sorted = []
+    while l < len(left) and r < len(right):
+        if left[l] < right[r]:
+            A_sorted.append(left[l])
+            l += 1
         else:
-            result.append(right[r_idx])
-            r_idx += 1
-
-        if l_idx is len(left):
-            for i in right[r_idx:]:
-                result.append(i)
+            A_sorted.append(right[r])
+            r += 1
+        if l == len(left):
+            A_sorted += right[r:]
             break
-        elif r_idx is len(left):
-            for i in left[l_idx:]:
-                result.append(i)
+        elif r == len(right):
+            A_sorted += left[l:]
             break
+    return A_sorted
 
-    return result
 
 if __name__ == "__main__":
-    a = [1,5,34,4,2,4,3,21,205,3]
-    print(merge_sort(a))
+    A = [1, 5, 34, 4, 2, 4, 3, 21, 205, 3]
+    print(merge_sort(A))

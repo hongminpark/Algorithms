@@ -1,31 +1,31 @@
-# low size complexity
-
-def quick_sort(list, start, stop):
-
-    if stop <= start:
-        return
-
-    # pick pivot (ex. the last from the list)
-    pivot_idx = stop
-    pivot = list[pivot_idx]
-    wall_idx = start
-
-    # Traverse the list except the pivot
-    # if item < pivot: swap with the wall_idx value
-    # else: nothing to do
-    for tmp_idx, item in enumerate(list[start:stop]):
-        if item < pivot:
-            list[wall_idx], list[start + tmp_idx] = list[start + tmp_idx], list[wall_idx]
-            wall_idx += 1
-
-    # After traversing the list, swap wall and pivot
-    list[wall_idx], list[pivot_idx] = list[pivot_idx], list[wall_idx]
-
-    # quick_sort again the left and right lists
-    quick_sort(list, start, wall_idx-1)
-    quick_sort(list, wall_idx+1, stop)
-
+def quick_sort(A):
+    """
+    [idea]
+    1. 리스트의 임의의 pivot을 고른다. -> 보통 끝값
+    2. pivot보다 작은 값을 왼쪽, 큰 값을 오른쪽으로 보낸다.
+    3. 왼쪽과 오른쪽을 다시 quick_sort에 넣고 2번의 결과와 합친다.(Divide and Conquer)
+    """
+    
+    if len(A) <= 1:
+        return A
+    
+    pivot = A[-1]
+    now = []
+    smaller = []
+    bigger = []
+    for a in A:
+        if a == pivot:
+            now.append(a)
+        elif a < pivot:
+            smaller.append(a)
+        else:
+            bigger.append(a)
+    return quick_sort(smaller) + now + quick_sort(bigger)
+            
+    
 if __name__ == "__main__":
-    a = [1,5,34,4,2,4,3,21,205,3]
-    quick_sort(a, 0, len(a)-1)
-    print(a)
+    A = [2,5,1,10,3,9]
+    A1 = [2,4,53,1,23,41,2,3,5,6,3,43,55]
+    print(quick_sort(A))
+    print(quick_sort(A1))
+
