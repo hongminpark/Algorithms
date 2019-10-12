@@ -1,45 +1,45 @@
-def heapsort(list):
-    heapify(list)
-    size = len(list)
-    for i in range(size-1):
-        next = i+1
-        list[0], list[-next] = list[-next], list[0]
-        siftdown(list, 0, size-next-1)
+def heap_sort(A):
+    """
+    [idea]
+    1. 정렬되지 않은 리스트를 Upward 방식으로 노드를 붙여가며 Build Max Heap 한다.
+    2. Max Heap에서 첫번째 노드와 마지막 노드를 교환하면 가장 큰 수가 뒤로 간다.
+    3. 0번째 노드로 인해 Max-Heap이 깨졌으므로 0번째 노드를 가장큰 수 이전까지 Downward 방식으로 Heapify한다
+    """
 
-def heapify(list):
-    size = len(list)
+    for i in range(len(A)):
+        child = i
+        parent = i//2 + i%2 - 1
+        while parent >= 0:
+            if A[child] <= A[parent]:
+                break
+            A[child], A[parent] = A[parent], A[child]
+            child = parent
+            parent = child//2 + child%2 - 1
 
-    # Traverse from the half of the tree
-    for i in range(size/2-1, -1, -1):
-        siftdown(list, i, size-1)
+    for i in range(len(A)-1):
+        parent = 0
+        last = len(A) - 1 - i
+        A[parent], A[last] = A[last], A[parent]
 
-def siftdown(list, i, end):
-    
-    l_child = 2*i+1
-    r_child = 2*i+2
+        while parent <= (last-1)//2 + (last-1)%2 - 1:
+            child1 = 2*parent + 1
+            child2 = 2*parent + 2
+            if child2 == last:
+                maxchild = child1
+            else:
+                if A[child1] >= A[child2]:
+                    maxchild = child1
+                else:
+                    maxchild = child2
 
-    # child out of end index
-    if l_child > end:
-        return
-    # 1 child case
-    elif l_child is end:
-        if list[l_child] > list[i]:
-            list[l_child], list[i] = list[i], list[l_child]
-    else:
-        if list[l_child] >= list[r_child]:
-            if list[l_child] > list[i]:
-                list[l_child], list[i] = list[i], list[l_child]
-                siftdown(list, l_child, end)
-        else:
-            if list[r_child] > list[i]:
-                list[r_child], list[i] = list[i], list[r_child]
-                siftdown(list, r_child, end)
+            if A[parent] < A[maxchild]:
+                A[parent], A[maxchild] = A[maxchild], A[parent]
+                parent = maxchild
+            else:
+                break
+    return A
+
 
 if __name__ == "__main__":
-    a = [7,6,5,4,2,1,3]
-    # b = [1, 5, 34, 4, 2, 4, 3, 21, 205, 3]
-    b = [6, 2, 8, 9, 7, 5, 4]
-    # heapify(b)
-    print(b)
-    heapsort(b)
-    print(b)
+    A = [1, 5, 34, 4, 2, 4, 3, 21, 205, 3]
+    print(heap_sort(A))
