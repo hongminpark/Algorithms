@@ -6,9 +6,13 @@ def quick_sort(A):
     3. 왼쪽과 오른쪽을 다시 quick_sort에 넣고 2번의 결과와 합친다.(Divide and Conquer)
     """
 
+    N = len(A)
+    if N <= 1:
+        return A
+
     pivot = A[-1]
     smaller, bigger = [], []
-    for i in range(len(A)-1):
+    for i in range(N-1):
         if A[i] <= pivot:
             smaller.append(A[i])
         else:
